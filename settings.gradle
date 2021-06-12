@@ -1,0 +1,3 @@
+include ':linecenterview'
+include ':app'
+rootProject.name = "LinkedLineCenterSquareView"
