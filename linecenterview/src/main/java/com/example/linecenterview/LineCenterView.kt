@@ -207,4 +207,12 @@ class LineCenterSquareView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+        fun create(activity : Activity) : LineCenterSquareView {
+            val view : LineCenterSquareView = LineCenterSquareView(activity)
+            activity.setContentView(view)
+            return view
+        }
+    }
 }
