@@ -23,6 +23,7 @@ val sizeFactor : Float = 3.9f
 val delay : Long = 20
 val scGap : Float = 0.02f / parts
 val backColor : Int = Color.parseColor("#BDBDBD")
+val lines  : Int = 4
 
 fun Int.inverse() : Float = 1f / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
@@ -35,13 +36,13 @@ fun Canvas.drawLineCenterSquare(scale : Float, w : Float, h : Float, paint : Pai
     val sc3 : Float = scale.divideScale(2, parts)
     save()
     translate(w / 2, h / 2)
-    for (j in 0..3) {
-        val y : Float = size * 0.5f * sc2
+    for (j in 0..(lines - 1)) {
+        val y : Float = size * 0.5f * sc2 * (1 - j % 2) + (j % 2) * size * 0.5f
         val upSize : Float = size * (1 - j % 2)  + size * (j % 2)* sc2
         save()
         translate((-w / 2 - size) * (1 - sc1), 0f)
         rotate(90f * j)
-        drawLine(-upSize / 2 + size * sc3, y, upSize / 2, y, paint)
+        drawLine(-upSize / 2, y, upSize / 2 - size * sc3.divideScale(j, lines), y, paint)
         restore()
     }
     restore()
@@ -53,7 +54,7 @@ fun Canvas.drawLCSNode(i : Int, scale : Float, paint : Paint) {
     paint.color = colors[i]
     paint.strokeCap = Paint.Cap.ROUND
     paint.strokeWidth = Math.min(w, h) / strokeFactor
-    drawLCSNode(i, scale, paint)
+    drawLineCenterSquare(scale, w, h, paint)
 }
 
 class LineCenterSquareView(ctx : Context) : View(ctx) {
