@@ -182,4 +182,27 @@ class LineCenterSquareView(ctx : Context) : View(ctx) {
             curr.startUpdating(cb)
         }
     }
+
+    data class Renderer(var view : LineCenterSquareView) {
+
+        private val animator : Animator = Animator(view)
+        private val lineCenterSquare : LineCenterSquare = LineCenterSquare(0)
+        private val paint : Paint = Paint(Paint.ANTI_ALIAS_FLAG)
+
+        fun render(canvas : Canvas) {
+            canvas.drawColor(backColor)
+            lineCenterSquare.draw(canvas, paint)
+            animator.animate {
+                lineCenterSquare.update {
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            lineCenterSquare.startUpdating {
+                animator.start()
+            }
+        }
+    }
 }
